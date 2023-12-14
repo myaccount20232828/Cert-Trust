@@ -25,7 +25,7 @@ struct ContentView: View {
         }
         .onAppear {
             do {
-                Tweaks = try FileManager.default.contentsOfDirectory(atPath: TweaksPath) ?? []
+                Tweaks = try FileManager.default.contentsOfDirectory(atPath: TweaksPath)
             } catch {
                 print(error)
             }
@@ -42,9 +42,9 @@ func GetTrollStoreApps() -> [TrollStoreApp] {
     do {
         var TrollStoreApps: [TrollStoreApp] = []
         let BundlesPath = "/var/containers/Bundle/Application"
-        let Bundles = try FileManager.default.contentsOfDirectory(atPath: BundlesPath) ?? []
+        let Bundles = try FileManager.default.contentsOfDirectory(atPath: BundlesPath)
         for App in Bundles.filter({FileManager.default.fileExists(atPath: "\(BundlesPath)/\($0)/_TrollStore")}) {
-            let BundlePath = "\(AppBundlesPath)/\($0)"
+            let BundlePath = "\(BundlesPath)/\($0)"
             if let AppName = try FileManager.default.contentsOfDirectory(atPath: BundlePath).filter({$0.hasSuffix(".app")}).first {
                 let InfoPlist = NSDictionary(contentsOfFile: "\(BundlePath)/\(AppName)/Info.plist") ?? NSDictionary()
                 TrollStoreApps.append(TrollStoreApp(Name: GetAppNameFromInfoPlist(InfoPlist), BundleID: InfoPlist.value(forKey: "CFBundleIdentifier") as? String ?? ""))
