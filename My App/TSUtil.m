@@ -23,7 +23,7 @@ void spawnRoot(NSString* path, NSArray* args) {
     posix_spawnattr_set_persona_uid_np(&attr, 0);
     posix_spawnattr_set_persona_gid_np(&attr, 0);
     posix_spawn_file_actions_t action;
-    posix_spawn_file_actions_init(&action)
+    posix_spawn_file_actions_init(&action);
     pid_t task_pid;
     int status = -200;
     int spawnError = posix_spawn(&task_pid, [path UTF8String], &action, &attr, (char* const*)argsC, NULL);
