@@ -27,13 +27,37 @@ struct ContentView: View {
     }
 }
 
-func GetTrollStoreApps() -> [String] {
+struct TrollStoreApp: Hashable {
+    var Name: String
+    var BundleID: String
+}
+
+func GetTrollStoreApps() -> [TrollStoreApp] {
     do {
-        let AppBundlesPath = "/var/containers/Bundle/Application"
-        let AppBundles = try FileManager.default.contentsOfDirectory(atPath: AppBundlesPath) ?? []
-        for App in AppBundles.filter({FileManager.default.fileExists(atPath: "\(AppBundlesPath)/\($0)/_TrollStore")}) {
+        var TrollStoreApps: [TrollStoreApp] = []
+        let BundlesPath = "/var/containers/Bundle/Application"
+        let Bundles = try FileManager.default.contentsOfDirectory(atPath: BundlesPath) ?? []
+        for App in Bundles.filter({FileManager.default.fileExists(atPath: "\(BundlesPath)/\($0)/_TrollStore")}) {
+            let BundlePath = "\(AppBundlesPath)/\($0)"
+            if let AppName = try FileManager.default.contentsOfDirectory(atPath: BundlePath)?.filter({$0.hasSuffix(".app")}).first {
+                let InfoPlist = NSDictionary(contentsOfFile: "\(BundlePath)/\(AppName)/Info.plist") ?? NSDictionary()
+            }
         }
+        return TrollStoreApps
     } catch {
         print(error)
+        return []
     }
+}
+
+func GetAppNameFromInfoPlist(_ Plist: NSDictionary) -> String {
+    let PlistKeys = Plist.allKeys as! [String]
+    if PlistKeys.contains("CFBundleDisplayName") {
+        return Plist.value(forKey: "CFBundleDisplayName") as! String
+    } else if PlistKeys.contains("CFBundleName") {
+        return Plist.value(forKey: "CFBundleName") as! String
+    } else if PlistKeys.contains("CFBundleExecutable") {
+        return Plist.value(forKey: "CFBundleExecutable") as! String
+    }
+    return ""
 }
