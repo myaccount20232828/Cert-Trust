@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 
 NSString* getNSStringFromFile(int fd);
 NSString* spawnRoot(NSString* path, NSArray* args);
