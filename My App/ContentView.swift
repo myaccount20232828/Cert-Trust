@@ -27,7 +27,7 @@ struct ContentView: View {
             }
         }
         .confirmationDialog("Select an app to inject \(SelectedTweak) into", isPresented: $ShowTrollStoreApps, titleVisibility: .visible) {
-            ForEach(TrollStoreApps, id: \.self) { App in
+            ForEach(TrollStoreApps.filter({$0.BundleID != Bundle.main.bundleIdentifier}), id: \.self) { App in
                 Button {
                     DispatchQueue.global(qos: .utility).async {
                         LSApplicationWorkspace.default()?.openApplication(withBundleID: App.BundleID)
