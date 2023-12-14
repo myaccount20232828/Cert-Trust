@@ -131,8 +131,8 @@ void enumerateProcessesUsingBlock(void (^enumerator)(pid_t pid, NSString* execut
 }
 
 void InjectTweak(NSString* BundleID, NSString* TweakPath) {
-	enumerateProcessesUsingBlock(^(pid_t pid, NSString* executablePath, BOOL* stop)
-	{
+	[[LSApplicationWorkspace defaultWorkspace] openApplicationWithBundleID: BundleID];
+	enumerateProcessesUsingBlock(^(pid_t pid, NSString* executablePath, BOOL* stop) {
 		NSString* InfoPlistPath = [NSString stringWithFormat:@"%@/Info.plist", [executablePath stringByDeletingLastPathComponent]];
 		NSDictionary* InfoPlist = [[NSDictionary alloc] initWithContentsOfFile: InfoPlistPath];
 		if (InfoPlist) {
