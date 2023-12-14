@@ -37,6 +37,7 @@ struct ContentView: View {
                     }
                 }
             }
+            .disabled(!FileManager.default.fileExists(atPath: "/var/jb"))
             Section(footer: Text("Made by @AppInstalleriOS")) {
                 Toggle("Show Log", isOn: $ShowLog)
                 Button {
@@ -45,7 +46,7 @@ struct ContentView: View {
                     } else {
                         spawnRoot("\(RootPath)/usr/bin/RootHelper", "mv", RootPath, "/var/jb")
                     }
-                } label {
+                } label: {
                     Text(FileManager.default.fileExists(atPath: "/var/jb") ? "Hide" : "Show")
                 }
             }
