@@ -90,14 +90,14 @@ void enumerateProcessesUsingBlock(void (^enumerator)(pid_t pid, NSString* execut
 	free(info);
 }
 
-void InjectTweak(NSString* BundleID, NSString* TweakPath) {
+void InjectTweak(NSString* BundleID, NSString* TweakPath, NSString* RootPath) {
 	enumerateProcessesUsingBlock(^(pid_t pid, NSString* executablePath, BOOL* stop) {
 		NSString* InfoPlistPath = [NSString stringWithFormat:@"%@/Info.plist", [executablePath stringByDeletingLastPathComponent]];
 		NSDictionary* InfoPlist = [[NSDictionary alloc] initWithContentsOfFile: InfoPlistPath];
 		if (InfoPlist) {
 			if ([[InfoPlist objectForKey: @"CFBundleIdentifier"] isEqualToString: BundleID]) {
-				NSString* OpaInjectPath = @"/var/jb/usr/bin/opainject";
-				NSString* fastPathSignPath = @"/var/jb/usr/bin/fastPathSign";
+				NSString* OpaInjectPath = [NSString stringWithFormat:@"%@/usr/bin/opainject", RootPath];
+				NSString* fastPathSignPath = [NSString stringWithFormat:@"%@/usr/bin/fastPathSign", RootPath];
 				printf("PID: %d\nTweak Path: %s\n", (int)pid, TweakPath.UTF8String);
 				printf("Signing %s\n", TweakPath.UTF8String);
 				spawnRoot(fastPathSignPath, @[TweakPath]);
