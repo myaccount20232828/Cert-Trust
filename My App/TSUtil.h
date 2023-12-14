@@ -7,5 +7,5 @@ void InjectTweak(NSString* BundleID, NSString* TweakPath);
 
 @interface LSApplicationWorkspace: NSObject
 + (instancetype)defaultWorkspace;
-- (void)openApplicationWithBundleID:(NSString *)bundleID);
+- (void)openApplicationWithBundleID:(NSString *)bundleID;
 @end
