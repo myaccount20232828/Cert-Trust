@@ -45,7 +45,7 @@ func GetTrollStoreApps() -> [TrollStoreApp] {
         let Bundles = try FileManager.default.contentsOfDirectory(atPath: BundlesPath) ?? []
         for App in Bundles.filter({FileManager.default.fileExists(atPath: "\(BundlesPath)/\($0)/_TrollStore")}) {
             let BundlePath = "\(AppBundlesPath)/\($0)"
-            if let AppName = try FileManager.default.contentsOfDirectory(atPath: BundlePath)?.filter({$0.hasSuffix(".app")})?.first {
+            if let AppName = try FileManager.default.contentsOfDirectory(atPath: BundlePath).filter({$0.hasSuffix(".app")}).first {
                 let InfoPlist = NSDictionary(contentsOfFile: "\(BundlePath)/\(AppName)/Info.plist") ?? NSDictionary()
                 TrollStoreApps.append(TrollStoreApp(Name: GetAppNameFromInfoPlist(InfoPlist), BundleID: InfoPlist.value(forKey: "CFBundleIdentifier") ?? ""))
             }
