@@ -26,11 +26,11 @@ struct ContentView: View {
                 print(error)
             }
         }
-        .confirmationDialog("Select an app to tweak", isPresented: $ShowTrollStoreApps, titleVisibility: .visible) {
+        .confirmationDialog("Select an app to inject \(SelectedTweak) into", isPresented: $ShowTrollStoreApps, titleVisibility: .visible) {
             ForEach(TrollStoreApps, id: \.self) { App in
                 Button {
                     DispatchQueue.global(qos: .utility).async {
-                        LSApplicationWorkspace.defaultWorkspace(openApplicationWithBundleID: App.BundleID)
+                        LSApplicationWorkspace.defaultWorkspace.openApplicationWithBundleID(App.BundleID)
                         InjectTweak(App.BundleID, "\(TweaksPath)/\(SelectedTweak)")
                         SelectedTweak = ""
                     }
