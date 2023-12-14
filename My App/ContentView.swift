@@ -10,7 +10,7 @@ struct ContentView: View {
     @State var ShowLog = false
     var body: some View {
         Form {
-            if ShowLog {
+            if ShowLog && !LogItems.isEmpty {
                 ScrollViewReader { scroll in
                     VStack(alignment: .leading) {
                         ForEach(0..<LogItems.count, id: \.self) { LogItem in
@@ -57,11 +57,11 @@ struct ContentView: View {
                         SelectedTweak = ""
                     }
                 } label: {
-                    VStack(alignment: .leading) {
+                    HStack {
+                        Color.red
+                        .frame(width: 35, height: 35)
+                        .cornerRadius(10)
                         Text(App.Name)
-                        Text(App.BundleID)
-                        .font(.system(size: 10))
-                        .opacity(0.5)
                     }
                 }
             }
