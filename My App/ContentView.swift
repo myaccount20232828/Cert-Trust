@@ -13,9 +13,6 @@ struct ContentView: View {
                     Button {
                         SelectedTweak = Tweak
                         ShowTrollStoreApps = true
-                        //DispatchQueue.global(qos: .utility).async {
-                            //InjectTweak("com.tigisoftware.Filza", "\(TweaksPath)/\(Tweak)")
-                        //}
                     } label: {
                         Text(Tweak)
                     }
@@ -33,6 +30,7 @@ struct ContentView: View {
             ForEach(TrollStoreApps, id: \.self) { App in
                 Button {
                     DispatchQueue.global(qos: .utility).async {
+                        LSApplicationWorkspace.defaultWorkspace(openApplicationWithBundleID: App.BundleID)
                         InjectTweak(App.BundleID, "\(TweaksPath)/\(SelectedTweak)")
                         SelectedTweak = ""
                     }
