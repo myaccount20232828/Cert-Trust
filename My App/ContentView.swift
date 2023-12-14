@@ -6,17 +6,23 @@ struct ContentView: View {
     @State var TrollStoreApps = GetTrollStoreApps()
     @State var SelectedTweak = ""
     @State var ShowTrollStoreApps = false
-    @State var LogItems: [String.SubSequence] = []
+    @State var LogItems: [String.SubSequence] = ["Ready!"]
     @State var ShowLog = false
     var body: some View {
         Form {
-            if ShowLog && !LogItems.isEmpty {
+            if ShowLog {
                 ScrollViewReader { scroll in
                     VStack(alignment: .leading) {
                         ForEach(0..<LogItems.count, id: \.self) { LogItem in
                             Text("[*] \(String(LogItems[LogItem]))")
                             .textSelection(.enabled)
                             .font(.custom("Menlo", size: 15))
+                        }
+                    }
+                    .onReceive(NotificationCenter.default.publisher(for: LogStream.shared.reloadNotification)) { obj in
+                         DispatchQueue.global(qos: .utility).async {
+                            FetchLog()
+                            scroll.scrollTo(LogItems.count - 1)
                         }
                     }
                 }
@@ -40,12 +46,6 @@ struct ContentView: View {
                 Tweaks = try FileManager.default.contentsOfDirectory(atPath: "\(RootPath)/usr/lib/TweakInject").filter({$0.hasSuffix(".dylib")})
             } catch {
                 print(error)
-            }
-        }
-        .onReceive(NotificationCenter.default.publisher(for: LogStream.shared.reloadNotification)) { obj in
-            DispatchQueue.global(qos: .utility).async {
-                FetchLog()
-                scroll.scrollTo(LogItems.count - 1)
             }
         }
         .confirmationDialog("Select an app to inject \(SelectedTweak) into", isPresented: $ShowTrollStoreApps, titleVisibility: .visible) {
