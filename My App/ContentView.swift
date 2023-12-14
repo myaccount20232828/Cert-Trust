@@ -42,9 +42,9 @@ struct ContentView: View {
                 Toggle("Show Log", isOn: $ShowLog)
                 Button {
                     if FileManager.default.fileExists(atPath: "/var/jb") {
-                        spawnRoot("/var/jb/usr/bin/RootHelper", "mv", "/var/jb", RootPath)
+                        spawnRoot("/var/jb/usr/bin/RootHelper", ["mv", "/var/jb", RootPath])
                     } else {
-                        spawnRoot("\(RootPath)/usr/bin/RootHelper", "mv", RootPath, "/var/jb")
+                        spawnRoot("\(RootPath)/usr/bin/RootHelper", ["mv", RootPath, "/var/jb"])
                     }
                 } label: {
                     Text(FileManager.default.fileExists(atPath: "/var/jb") ? "Hide" : "Show")
