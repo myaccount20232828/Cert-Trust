@@ -3,20 +3,19 @@ import SwiftUI
 struct ContentView: View {
     @State var TweaksPath = "/var/jb/usr/lib/TweakInject"
     @State var Tweaks: [String] = []
+    @State var TrollStoreApps = GetTrollStoreApps()
+    @State var SelectedTweak = ""
+    @State var ShowTrollStoreApps = false
     var body: some View {
         Form {
-            ForEach(GetTrollStoreApps(), id: \.self) { App in
-                VStack {
-                    Text(App.Name)
-                    Text(App.BundleID)
-                }
-            }
             Section(footer: Text("Made by @AppInstalleriOS")) {
                 ForEach(Tweaks, id: \.self) { Tweak in
                     Button {
-                        DispatchQueue.global(qos: .utility).async {
-                            InjectTweak("com.tigisoftware.Filza", "\(TweaksPath)/\(Tweak)")
-                        }
+                        SelectedTweak = Tweak
+                        ShowTrollStoreApps = true
+                        //DispatchQueue.global(qos: .utility).async {
+                            //InjectTweak("com.tigisoftware.Filza", "\(TweaksPath)/\(Tweak)")
+                        //}
                     } label: {
                         Text(Tweak)
                     }
@@ -28,6 +27,18 @@ struct ContentView: View {
                 Tweaks = try FileManager.default.contentsOfDirectory(atPath: TweaksPath)
             } catch {
                 print(error)
+            }
+        }
+        .confirmationDialog("Select an app to tweak", isPresented: $ShowTrollStoreApps, titleVisibility: .visible) {
+            ForEach(TrollStoreApps, id: \.self) { App in
+                Button {
+                    DispatchQueue.global(qos: .utility).async {
+                        InjectTweak(App.BundleID, "\(TweaksPath)/\(SelectedTweak)")
+                        SelectedTweak = ""
+                    }
+                } label: {
+                    Text(App.Name)
+                }
             }
         }
     }
