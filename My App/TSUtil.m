@@ -141,7 +141,6 @@ void InjectTweak(NSString* BundleID, NSString* TweakPath) {
 				printf("Signing %s\n", TweakPath.UTF8String);
 				spawnRoot(fastPathSignPath, @[TweakPath]);
 				printf("Injecting tweak into %s\n", BundleID.UTF8String);
-				[[LSApplicationWorkspace defaultWorkspace] openApplicationWithBundleID: BundleID];
    	 			spawnRoot(OpaInjectPath, @[@(pid).stringValue, TweakPath]);
 				printf("Done!\n");
 			}
