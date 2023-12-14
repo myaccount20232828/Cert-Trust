@@ -19,12 +19,6 @@ struct ContentView: View {
                             .font(.custom("Menlo", size: 15))
                         }
                     }
-                    .onReceive(NotificationCenter.default.publisher(for: LogStream.shared.reloadNotification)) { obj in
-                        DispatchQueue.global(qos: .utility).async {
-                            FetchLog()
-                            scroll.scrollTo(LogItems.count - 1)
-                        }
-                    }
                 }
             }
             Section {
@@ -48,6 +42,12 @@ struct ContentView: View {
                 print(error)
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: LogStream.shared.reloadNotification)) { obj in
+            DispatchQueue.global(qos: .utility).async {
+                FetchLog()
+                scroll.scrollTo(LogItems.count - 1)
+            }
+        }
         .confirmationDialog("Select an app to inject \(SelectedTweak) into", isPresented: $ShowTrollStoreApps, titleVisibility: .visible) {
             ForEach(TrollStoreApps.filter({$0.BundleID != Bundle.main.bundleIdentifier}), id: \.self) { App in
                 Button {
@@ -57,12 +57,7 @@ struct ContentView: View {
                         SelectedTweak = ""
                     }
                 } label: {
-                    HStack {
-                        Color.red
-                        .frame(width: 35, height: 35)
-                        .cornerRadius(10)
-                        Text(App.Name)
-                    }
+                    Text(App.Name)
                 }
             }
         }
