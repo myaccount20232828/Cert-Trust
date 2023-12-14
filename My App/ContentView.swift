@@ -44,6 +44,7 @@ struct ContentView: View {
                     if FileManager.default.fileExists(atPath: "/var/jb") {
                         spawnRoot("/var/jb/usr/bin/RootHelper", ["mv", "/var/jb", RootPath])
                     } else {
+                        print("\(RootPath)/usr/bin/RootHelper")
                         spawnRoot("\(RootPath)/usr/bin/RootHelper", ["mv", RootPath, "/var/jb"])
                     }
                 } label: {
