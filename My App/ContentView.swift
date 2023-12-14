@@ -21,7 +21,7 @@ struct ContentView: View {
         }
         .onAppear {
             do {
-                Tweaks = try FileManager.default.contentsOfDirectory(atPath: TweaksPath)
+                Tweaks = try FileManager.default.contentsOfDirectory(atPath: TweaksPath).filter({$0.hasSuffix(".dylib")})
             } catch {
                 print(error)
             }
@@ -30,7 +30,7 @@ struct ContentView: View {
             ForEach(TrollStoreApps, id: \.self) { App in
                 Button {
                     DispatchQueue.global(qos: .utility).async {
-                        LSApplicationWorkspace.defaultWorkspace()?.openApplicationWithBundleID(App.BundleID)
+                        LSApplicationWorkspace.defaultWorkspace()?.openApplication(withBundleID: App.BundleID)
                         InjectTweak(App.BundleID, "\(TweaksPath)/\(SelectedTweak)")
                         SelectedTweak = ""
                     }
