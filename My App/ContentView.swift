@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @AppStorage("HiddenRootPath") var HiddenRootPath = "/var/\(UUID().uuidString)"
+    @AppStorage("HiddenRootPath") var HiddenRootPath = ""
     @State var RootPath = ""
     @State var Tweaks: [String] = []
     @State var TrollStoreApps = GetTrollStoreApps()
@@ -42,11 +42,12 @@ struct ContentView: View {
             Section(footer: Text("Made by @AppInstalleriOS")) {
                 Toggle("Show Log", isOn: $ShowLog)
                 Button {
-                    print("\(RootPath)/usr/bin/RootHelper")
                     if FileManager.default.fileExists(atPath: "/var/jb") {
+                        HiddenRootPath = "/var/\(UUID().uuidString)"
                         spawnRoot("\(RootPath)/usr/bin/RootHelper", ["mv", "/var/jb", HiddenRootPath])
                     } else {
                         spawnRoot("\(RootPath)/usr/bin/RootHelper", ["mv", HiddenRootPath, "/var/jb"])
+                        HiddenRootPath = ""
                     }
                     RootPath = FileManager.default.fileExists(atPath: "/var/jb") ? "/var/jb" : HiddenRootPath
                 } label: {
