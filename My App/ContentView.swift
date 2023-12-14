@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var RootPath = "/var/jb"
     @State var Tweaks: [String] = []
     @State var TrollStoreApps = GetTrollStoreApps()
     @State var SelectedTweak = ""
@@ -9,20 +10,20 @@ struct ContentView: View {
     var body: some View {
         Form {
             ScrollViewReader { scroll in
-                    VStack(alignment: .leading) {
-                        ForEach(0..<LogItems.count, id: \.self) { LogItem in
-                            Text("[*] \(String(LogItems[LogItem]))")
-                            .textSelection(.enabled)
-                            .font(.custom("Menlo", size: 15))
-                        }
-                    }
-                    .onReceive(NotificationCenter.default.publisher(for: LogStream.shared.reloadNotification)) { obj in
-                        DispatchQueue.global(qos: .utility).async {
-                            FetchLog()
-                            scroll.scrollTo(LogItems.count - 1)
-                        }
+                VStack(alignment: .leading) {
+                    ForEach(0..<LogItems.count, id: \.self) { LogItem in
+                        Text("[*] \(String(LogItems[LogItem]))")
+                        .textSelection(.enabled)
+                        .font(.custom("Menlo", size: 15))
                     }
                 }
+                .onReceive(NotificationCenter.default.publisher(for: LogStream.shared.reloadNotification)) { obj in
+                    DispatchQueue.global(qos: .utility).async {
+                        FetchLog()
+                        scroll.scrollTo(LogItems.count - 1)
+                    }
+                }
+            }
             Section(footer: Text("Made by @AppInstalleriOS")) {
                 ForEach(Tweaks, id: \.self) { Tweak in
                     Button {
@@ -36,7 +37,7 @@ struct ContentView: View {
         }
         .onAppear {
             do {
-                Tweaks = try FileManager.default.contentsOfDirectory(atPath: TweaksPath).filter({$0.hasSuffix(".dylib")})
+                Tweaks = try FileManager.default.contentsOfDirectory(atPath: "\(RootPath)/usr/lib/TweakInject").filter({$0.hasSuffix(".dylib")})
             } catch {
                 print(error)
             }
@@ -46,7 +47,6 @@ struct ContentView: View {
                 Button {
                     DispatchQueue.global(qos: .utility).async {
                         LSApplicationWorkspace.default()?.openApplication(withBundleID: App.BundleID)
-                        let RootPath = "/var/jb"
                         InjectTweak(App.BundleID, "\(RootPath)/usr/lib/TweakInject/\(SelectedTweak)", RootPath)
                         SelectedTweak = ""
                     }
