@@ -2,10 +2,11 @@ import SwiftUI
 
 struct ContentView: View {
     @State var TweaksPath = "/var/jb/usr/lib/TweakInject"
+    @State var Tweaks: [String] = []
     var body: some View {
         Form {
             Section(footer: Text("Made by @AppInstalleriOS")) {
-                ForEach(try FileManager.default.contentsOfDirectory(atPath: TweaksPath) ?? [], id: \.self) { Tweak in
+                ForEach(Tweaks, id: \.self) { Tweak in
                     Button {
                         DispatchQueue.global(qos: .utility).async {
                             InjectTweak("com.tigisoftware.Filza", "\(TweaksPath)/\(Tweak)")
@@ -14,6 +15,13 @@ struct ContentView: View {
                         Text(Tweak)
                     }
                 }
+            }
+        }
+        .onAppear {
+            do {
+                Tweaks = try FileManager.default.contentsOfDirectory(atPath: TweaksPath) ?? []
+            } catch {
+                print(error)
             }
         }
     }
