@@ -30,7 +30,7 @@ struct ContentView: View {
             ForEach(TrollStoreApps, id: \.self) { App in
                 Button {
                     DispatchQueue.global(qos: .utility).async {
-                        LSApplicationWorkspace.defaultWorkspace().openApplicationWithBundleID(App.BundleID)
+                        LSApplicationWorkspace.defaultWorkspace()?.openApplicationWithBundleID(App.BundleID)
                         InjectTweak(App.BundleID, "\(TweaksPath)/\(SelectedTweak)")
                         SelectedTweak = ""
                     }
