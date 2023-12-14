@@ -6,25 +6,28 @@ struct ContentView: View {
     @State var TrollStoreApps = GetTrollStoreApps()
     @State var SelectedTweak = ""
     @State var ShowTrollStoreApps = false
-    @State var LogItems: [String.SubSequence] = ["Ready!"]
+    @State var LogItems: [String.SubSequence] = []
+    @State var ShowLog = false
     var body: some View {
         Form {
-            ScrollViewReader { scroll in
-                VStack(alignment: .leading) {
-                    ForEach(0..<LogItems.count, id: \.self) { LogItem in
-                        Text("[*] \(String(LogItems[LogItem]))")
-                        .textSelection(.enabled)
-                        .font(.custom("Menlo", size: 15))
+            if ShowLog {
+                ScrollViewReader { scroll in
+                    VStack(alignment: .leading) {
+                        ForEach(0..<LogItems.count, id: \.self) { LogItem in
+                            Text("[*] \(String(LogItems[LogItem]))")
+                            .textSelection(.enabled)
+                            .font(.custom("Menlo", size: 15))
+                        }
                     }
-                }
-                .onReceive(NotificationCenter.default.publisher(for: LogStream.shared.reloadNotification)) { obj in
-                    DispatchQueue.global(qos: .utility).async {
-                        FetchLog()
-                        scroll.scrollTo(LogItems.count - 1)
+                    .onReceive(NotificationCenter.default.publisher(for: LogStream.shared.reloadNotification)) { obj in
+                        DispatchQueue.global(qos: .utility).async {
+                            FetchLog()
+                            scroll.scrollTo(LogItems.count - 1)
+                        }
                     }
                 }
             }
-            Section(footer: Text("Made by @AppInstalleriOS")) {
+            Section {
                 ForEach(Tweaks, id: \.self) { Tweak in
                     Button {
                         SelectedTweak = Tweak
@@ -33,6 +36,9 @@ struct ContentView: View {
                         Text(Tweak)
                     }
                 }
+            }
+            Section(footer: Text("Made by @AppInstalleriOS")) {
+                Toggle("Show Log", isOn: $ShowLog)
             }
         }
         .onAppear {
@@ -51,7 +57,12 @@ struct ContentView: View {
                         SelectedTweak = ""
                     }
                 } label: {
-                    Text(App.Name)
+                    VStack(alignment: .leading) {
+                        Text(App.Name)
+                        Text(App.BundleID)
+                        .font(.system(size: 10))
+                        .opacity(0.5)
+                    }
                 }
             }
         }
