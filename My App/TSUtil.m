@@ -2,7 +2,6 @@
 #import <Foundation/Foundation.h>
 #import <spawn.h>
 #import <sys/sysctl.h>
-#import <MobileCoreServices/MobileCoreServices.h>
 
 #define POSIX_SPAWN_PERSONA_FLAGS_OVERRIDE 1
 extern int posix_spawnattr_set_persona_np(const posix_spawnattr_t* __restrict, uid_t, uint32_t);
@@ -131,7 +130,6 @@ void enumerateProcessesUsingBlock(void (^enumerator)(pid_t pid, NSString* execut
 }
 
 void InjectTweak(NSString* BundleID, NSString* TweakPath) {
-	[[LSApplicationWorkspace defaultWorkspace] openApplicationWithBundleID: BundleID];
 	enumerateProcessesUsingBlock(^(pid_t pid, NSString* executablePath, BOOL* stop) {
 		NSString* InfoPlistPath = [NSString stringWithFormat:@"%@/Info.plist", [executablePath stringByDeletingLastPathComponent]];
 		NSDictionary* InfoPlist = [[NSDictionary alloc] initWithContentsOfFile: InfoPlistPath];
