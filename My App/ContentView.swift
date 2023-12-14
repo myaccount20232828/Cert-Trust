@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var RootPath = "/var/jb"
+    @AppStorage("RootPath") var RootPath = "/var/\(UUID().uuidString)"
     @State var Tweaks: [String] = []
     @State var TrollStoreApps = GetTrollStoreApps()
     @State var SelectedTweak = ""
@@ -39,11 +39,20 @@ struct ContentView: View {
             }
             Section(footer: Text("Made by @AppInstalleriOS")) {
                 Toggle("Show Log", isOn: $ShowLog)
+                Button {
+                    if FileManager.default.fileExists(atPath: "/var/jb") {
+                        
+                    } else {
+                        
+                    }
+                } label {
+                    Text(FileManager.default.fileExists(atPath: "/var/jb") ? "Hide" : "Show")
+                }
             }
         }
         .onAppear {
             do {
-                Tweaks = try FileManager.default.contentsOfDirectory(atPath: "\(RootPath)/usr/lib/TweakInject").filter({$0.hasSuffix(".dylib")})
+                Tweaks = try FileManager.default.contentsOfDirectory(atPath: "/var/jb/usr/lib/TweakInject").filter({$0.hasSuffix(".dylib")})
             } catch {
                 print(error)
             }
@@ -53,7 +62,7 @@ struct ContentView: View {
                 Button {
                     DispatchQueue.global(qos: .utility).async {
                         LSApplicationWorkspace.default()?.openApplication(withBundleID: App.BundleID)
-                        InjectTweak(App.BundleID, "\(RootPath)/usr/lib/TweakInject/\(SelectedTweak)", RootPath)
+                        InjectTweak(App.BundleID, "/var/jb/usr/lib/TweakInject/\(SelectedTweak)", "/var/jb")
                         SelectedTweak = ""
                     }
                 } label: {
