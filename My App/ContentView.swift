@@ -26,3 +26,14 @@ struct ContentView: View {
         }
     }
 }
+
+func GetTrollStoreApps() -> [String] {
+    do {
+        let AppBundlesPath = "/var/containers/Bundle/Application"
+        let AppBundles = try FileManager.default.contentsOfDirectory(atPath: AppBundlesPath) ?? []
+        for App in AppBundles.filter({FileManager.default.fileExists(atPath: "\(AppBundlesPath)/\($0)/_TrollStore")}) {
+        }
+    } catch {
+        print(error)
+    }
+}
