@@ -1,7 +1,8 @@
 import SwiftUI
 
 struct ContentView: View {
-    @AppStorage("RootPath") var RootPath = "/var/\(UUID().uuidString)"
+    @AppStorage("HiddenRootPath") var HiddenRootPath = "/var/\(UUID().uuidString)"
+    @State var RootPath = ""
     @State var Tweaks: [String] = []
     @State var TrollStoreApps = GetTrollStoreApps()
     @State var SelectedTweak = ""
@@ -41,20 +42,23 @@ struct ContentView: View {
             Section(footer: Text("Made by @AppInstalleriOS")) {
                 Toggle("Show Log", isOn: $ShowLog)
                 Button {
+                    print("\(RootPath)/usr/bin/RootHelper")
                     if FileManager.default.fileExists(atPath: "/var/jb") {
-                        spawnRoot("/var/jb/usr/bin/RootHelper", ["mv", "/var/jb", RootPath])
+                        spawnRoot("\(RootPath)/usr/bin/RootHelper", ["mv", "/var/jb", HiddenRootPath])
                     } else {
-                        print("\(RootPath)/usr/bin/RootHelper")
-                        spawnRoot("\(RootPath)/usr/bin/RootHelper", ["mv", RootPath, "/var/jb"])
+                        spawnRoot("\(RootPath)/usr/bin/RootHelper", ["mv", HiddenRootPath, "/var/jb"])
                     }
+                    RootPath = FileManager.default.fileExists(atPath: "/var/jb") ? "/var/jb" : HiddenRootPath
                 } label: {
                     Text(FileManager.default.fileExists(atPath: "/var/jb") ? "Hide" : "Show")
                 }
+                Text(RootPath)
             }
         }
         .onAppear {
             do {
-                Tweaks = try FileManager.default.contentsOfDirectory(atPath: "/var/jb/usr/lib/TweakInject").filter({$0.hasSuffix(".dylib")})
+                RootPath = FileManager.default.fileExists(atPath: "/var/jb") ? "/var/jb" : HiddenRootPath
+                Tweaks = try FileManager.default.contentsOfDirectory(atPath: "\(RootPath)/usr/lib/TweakInject").filter({$0.hasSuffix(".dylib")})
             } catch {
                 print(error)
             }
