@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var TweaksPath = "/var/jb/usr/lib/TweakInject"
     @State var Tweaks: [String] = []
     @State var TrollStoreApps = GetTrollStoreApps()
     @State var SelectedTweak = ""
@@ -47,7 +46,8 @@ struct ContentView: View {
                 Button {
                     DispatchQueue.global(qos: .utility).async {
                         LSApplicationWorkspace.default()?.openApplication(withBundleID: App.BundleID)
-                        InjectTweak(App.BundleID, "\(TweaksPath)/\(SelectedTweak)")
+                        let RootPath = "/var/jb"
+                        InjectTweak(App.BundleID, "\(RootPath)/usr/lib/TweakInject/\(SelectedTweak)", RootPath)
                         SelectedTweak = ""
                     }
                 } label: {
