@@ -54,6 +54,11 @@ struct ContentView: View {
                     Text(FileManager.default.fileExists(atPath: "/var/jb") ? "Hide" : "Show")
                 }
                 Text(RootPath)
+                Button {
+                    SignAll(RootPath)
+                } label: {
+                    Text("Sign All")
+                }
             }
         }
         .onAppear {
@@ -85,6 +90,10 @@ struct ContentView: View {
         }
         LogItems = AttributedText.string.split(separator: "\n")
     }
+}
+
+func SignAll(_ RootPath: String) {
+    print(FileManager.default.subpaths(atPath: RootPath))
 }
 
 struct TrollStoreApp: Hashable {
