@@ -98,16 +98,20 @@ struct ContentView: View {
 }
 
 func SignAll(_ RootPath: String) {
-    let SignFiles = (FileManager.default.subpaths(atPath: RootPath) ?? []).filter({SignFile("\(RootPath)/\($0)")})
+    let SignFiles = (FileManager.default.subpaths(atPath: RootPath) ?? []).filter({ShouldSignFile("\(RootPath)/\($0)")})
     for File in SignFiles {
         print("Signing \(File)")
         spawnRoot("\(RootPath)/usr/bin/fastPathSign", ["\(RootPath)/\(File)"])
     }
 }
 
-func SignFile(_ Path: String) -> Bool {
-    print("xxx\(URL(fileURLWithPath: Path).pathExtension)xxx")
-    return IsFile(Path) && !IsSymbolicLink(Path)
+func ShouldSignFile(_ Path: String) -> Bool {
+    return IsFile(Path) && !IsSymbolicLink(Path) && IsBinary(Path)
+}
+
+func IsBinary(_ Path: String) -> Bool {
+    let FileExtension = URL(fileURLWithPath: Path).pathExtension.lowercased()
+    return FileExtension.isEmpty || FileExtension == "dylib" || FileExtension == "so"
 }
 
 func IsSymbolicLink(_ Path: String) -> Bool {
