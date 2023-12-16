@@ -93,7 +93,16 @@ struct ContentView: View {
 }
 
 func SignAll(_ RootPath: String) {
-    print(FileManager.default.subpaths(atPath: RootPath))
+    let AllFiles = FileManager.default.subpaths(atPath: RootPath).filter({IsFile($0)})
+    for File in AllFiles {
+        print(File)
+    }
+}
+
+func IsFile(_ Path: String) -> Bool {
+    var IsDirectory = false
+    FileManager.default.fileExists(atPath: Path, isDirectory: &IsDirectory)
+    return !IsDirectory
 }
 
 struct TrollStoreApp: Hashable {
