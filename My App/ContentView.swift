@@ -9,8 +9,15 @@ struct ContentView: View {
     @State var ShowTrollStoreApps = false
     @State var LogItems: [String.SubSequence] = ["Ready!"]
     @State var ShowLog = false
+    @State var SignedFiles = 0
+    @State var FilesToSign = 0
     var body: some View {
         Form {
+            if SignedFiles != 0 {
+                Section {
+                    Text("\(SignedFiles)/\(FilesToSign)")
+                }
+            }
             if ShowLog {
                 ScrollViewReader { scroll in
                     VStack(alignment: .leading) {
@@ -57,7 +64,7 @@ struct ContentView: View {
                 Button {
                     SignAll(RootPath)
                 } label: {
-                    Text("Sign All 2.2")
+                    Text("Sign All 2.3")
                 }
                 Button {
                     InjectAll(RootPath)
@@ -95,17 +102,19 @@ struct ContentView: View {
         }
         LogItems = AttributedText.string.split(separator: "\n")
     }
-}
-
-func SignAll(_ RootPath: String) {
-    let SignFiles = (FileManager.default.subpaths(atPath: RootPath) ?? []).filter({ShouldSignFile("\(RootPath)/\($0)")})
-    for File in SignFiles {
-        print("Signing \(File)")
-        spawnRoot("\(RootPath)/usr/bin/fastPathSign", ["\(RootPath)/\(File)"])
+    func SignAll(_ RootPath: String) {
+        let SignFiles = (FileManager.default.subpaths(atPath: RootPath) ?? []).filter({ShouldSignFile("\(RootPath)/\($0)")})
+        FilesToSign = SignFiles.count
+        for File in SignFiles {
+            print("Signing \(File)")
+            spawnRoot("\(RootPath)/usr/bin/fastPathSign", ["\(RootPath)/\(File)"])
+            SignedFiles = SignedFiles + 1
+        }
     }
 }
 
 func ShouldSignFile(_ Path: String) -> Bool {
+    print(Path)
     return IsFile(Path) && !IsSymbolicLink(Path) && IsBinary(Path)
 }
 
