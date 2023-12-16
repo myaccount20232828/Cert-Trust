@@ -57,7 +57,7 @@ struct ContentView: View {
                 Button {
                     SignAll(RootPath)
                 } label: {
-                    Text("Sign All 2.1.2")
+                    Text("Sign All 2.2")
                 }
             }
         }
@@ -95,7 +95,8 @@ struct ContentView: View {
 func SignAll(_ RootPath: String) {
     let SignFiles = (FileManager.default.subpaths(atPath: RootPath) ?? []).filter({SignFile("\(RootPath)/\($0)")})
     for File in SignFiles {
-        print(File)
+        print("Signing \(File))
+        spawnRoot("\(RootPath)/usr/bin/fastPathSign", ["\(RootPath)/\(File)"])
     }
 }
 
