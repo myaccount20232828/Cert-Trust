@@ -95,8 +95,16 @@ struct ContentView: View {
 func SignAll(_ RootPath: String) {
     let AllFiles = (FileManager.default.subpaths(atPath: RootPath) ?? []).filter({IsFile("\(RootPath)/\($0)")})
     for File in AllFiles {
-        let a = FileManager.default.destinationOfSymbolicLink(atPath: "\(RootPath)/\(File)")
+        let a = destinationOfSymbolicLink("\(RootPath)/\(File)")
         print("\(File): \(a)")
+    }
+}
+
+func destinationOfSymbolicLink(_ Path: String) -> String {
+    do {
+        return try FileManager.default.destinationOfSymbolicLink(atPath: Path)
+    } catch {
+        return ""
     }
 }
 
