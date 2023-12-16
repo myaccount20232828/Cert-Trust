@@ -100,7 +100,7 @@ func SignAll(_ RootPath: String) {
     }
 }
 
-func IsSymbolicLink(_ Path: String) -> bool {
+func IsSymbolicLink(_ Path: String) -> Bool {
     do {
         if let FileType = try FileManager.default.attributesOfItem(atPath: Path)[FileAttributeKey.type] as? FileAttributeType {
             return FileType == .typeSymbolicLink
