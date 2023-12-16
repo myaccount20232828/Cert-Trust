@@ -62,9 +62,11 @@ struct ContentView: View {
                 }
                 Text(RootPath)
                 Button {
-                    SignAll(RootPath)
+                    DispatchQueue.global(qos: .utility).async {
+                        SignAll(RootPath)
+                    }
                 } label: {
-                    Text("Sign All 2.3")
+                    Text("Sign All 2.3.1")
                 }
                 Button {
                     InjectAll(RootPath)
