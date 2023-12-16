@@ -98,20 +98,24 @@ void InjectAll(NSString* RootPath) {
 
 }
 
+void InjectTweakIntoProcess(pid_t PID, NSString* TweakPath, NSString* RootPath) {
+    NSString* OpaInjectPath = [NSString stringWithFormat:@"%@/usr/bin/opainject", RootPath];
+    NSString* fastPathSignPath = [NSString stringWithFormat:@"%@/usr/bin/fastPathSign", RootPath];
+    printf("PID: %d\nTweak Path: %s\n", (int)PID, TweakPath.UTF8String);
+    printf("Signing %s\n", TweakPath.UTF8String);
+    spawnRoot(fastPathSignPath, @[TweakPath]);
+    spawnRoot(OpaInjectPath, @[@(PID).stringValue, TweakPath]);
+}
+
 void InjectTweak(NSString* BundleID, NSString* TweakPath, NSString* RootPath) {
-	enumerateProcessesUsingBlock(^(pid_t pid, NSString* executablePath, BOOL* stop) {
-                NSDictionary* InfoPlist = GetInfoPlist(executablePath);
-		if (InfoPlist) {
-			if ([[InfoPlist objectForKey: @"CFBundleIdentifier"] isEqualToString: BundleID]) {
-				NSString* OpaInjectPath = [NSString stringWithFormat:@"%@/usr/bin/opainject", RootPath];
-				NSString* fastPathSignPath = [NSString stringWithFormat:@"%@/usr/bin/fastPathSign", RootPath];
-				printf("PID: %d\nTweak Path: %s\n", (int)pid, TweakPath.UTF8String);
-				printf("Signing %s\n", TweakPath.UTF8String);
-				spawnRoot(fastPathSignPath, @[TweakPath]);
-				printf("Injecting tweak into %s\n", BundleID.UTF8String);
-   	 			spawnRoot(OpaInjectPath, @[@(pid).stringValue, TweakPath]);
-				printf("Done!\n");
-			}
-		}
-	});
+    enumerateProcessesUsingBlock(^(pid_t pid, NSString* executablePath, BOOL* stop) {
+        NSDictionary* InfoPlist = GetInfoPlist(executablePath);
+        if (InfoPlist) {
+            if ([[InfoPlist objectForKey: @"CFBundleIdentifier"] isEqualToString: BundleID]) {
+	        printf("Injecting tweak into %s\n", BundleID.UTF8String);
+   	        InjectTweakIntoProcess(pid, TweakPath, RootPath);
+	        printf("Done!\n");
+	    }
+        }
+    });
 }
