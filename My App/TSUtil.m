@@ -90,11 +90,17 @@ void enumerateProcessesUsingBlock(void (^enumerator)(pid_t pid, NSString* execut
 	free(info);
 }
 
+NSDictionary* GetInfoPlist(NSString* ExecutablePath) {
+    return [[NSDictionary alloc] initWithContentsOfFile: [NSString stringWithFormat:@"%@/Info.plist", [ExecutablePath stringByDeletingLastPathComponent]]];
+}
+
+void InjectAll(NSString* RootPath) {
+
+}
+
 void InjectTweak(NSString* BundleID, NSString* TweakPath, NSString* RootPath) {
 	enumerateProcessesUsingBlock(^(pid_t pid, NSString* executablePath, BOOL* stop) {
-		NSString* InfoPlistPath = [NSString stringWithFormat:@"%@/Info.plist", [executablePath stringByDeletingLastPathComponent]];
-		NSDictionary* InfoPlist = [[NSDictionary alloc] initWithContentsOfFile: InfoPlistPath];
-		if (InfoPlist) {
+		if (GetInfoPlist(executablePath)) {
 			if ([[InfoPlist objectForKey: @"CFBundleIdentifier"] isEqualToString: BundleID]) {
 				NSString* OpaInjectPath = [NSString stringWithFormat:@"%@/usr/bin/opainject", RootPath];
 				NSString* fastPathSignPath = [NSString stringWithFormat:@"%@/usr/bin/fastPathSign", RootPath];
