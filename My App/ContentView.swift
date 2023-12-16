@@ -102,7 +102,7 @@ func SignAll(_ RootPath: String) {
 func IsFile(_ Path: String) -> Bool {
     var IsDirectory: ObjCBool = false
     FileManager.default.fileExists(atPath: Path, isDirectory: &IsDirectory)
-    return !IsDirectory as Bool
+    return !IsDirectory.boolValue
 }
 
 struct TrollStoreApp: Hashable {
