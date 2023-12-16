@@ -57,7 +57,7 @@ struct ContentView: View {
                 Button {
                     SignAll(RootPath)
                 } label: {
-                    Text("Sign All 2.1")
+                    Text("Sign All 2.1.1")
                 }
             }
         }
@@ -95,7 +95,8 @@ struct ContentView: View {
 func SignAll(_ RootPath: String) {
     let AllFiles = (FileManager.default.subpaths(atPath: RootPath) ?? []).filter({IsFile("\(RootPath)/\($0)")})
     for File in AllFiles {
-        print(File)
+        let a = FileManager.default.destinationOfSymbolicLink("\(RootPath)/\(File)")
+        print("\(File): \(a)")
     }
 }
 
