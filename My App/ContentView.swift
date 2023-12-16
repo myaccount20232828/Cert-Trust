@@ -59,6 +59,11 @@ struct ContentView: View {
                 } label: {
                     Text("Sign All 2.2")
                 }
+                Button {
+                    InjectAll(RootPath)
+                } label: {
+                    Text("Inject All")
+                }
             }
         }
         .onAppear {
