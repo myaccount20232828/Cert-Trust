@@ -106,6 +106,7 @@ func SignAll(_ RootPath: String) {
 }
 
 func SignFile(_ Path: String) -> Bool {
+    print("xxx\(URL(fileURLWithPath: Path).pathExtension)xxx")
     return IsFile(Path) && !IsSymbolicLink(Path)
 }
 
