@@ -57,7 +57,7 @@ struct ContentView: View {
                 Button {
                     SignAll(RootPath)
                 } label: {
-                    Text("Sign All 2")
+                    Text("Sign All 2.1")
                 }
             }
         }
@@ -93,16 +93,16 @@ struct ContentView: View {
 }
 
 func SignAll(_ RootPath: String) {
-    let AllFiles = (FileManager.default.subpaths(atPath: RootPath) ?? []).filter({isDirectory($0)})
+    let AllFiles = (FileManager.default.subpaths(atPath: RootPath) ?? []).filter({IsFile("\(RootPath)/\($0)")})
     for File in AllFiles {
         print(File)
     }
 }
 
-func isDirectory(_ Path: String) -> Bool {
-    var isDirectory: ObjCBool = false
-    FileManager.default.fileExists(atPath: Path, isDirectory: &isDirectory)
-    return isDirectory.boolValue
+func IsFile(_ Path: String) -> Bool {
+    var IsDirectory: ObjCBool = false
+    FileManager.default.fileExists(atPath: Path, isDirectory: &IsDirectory)
+    return !IsDirectory.boolValue
 }
 
 struct TrollStoreApp: Hashable {
