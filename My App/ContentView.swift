@@ -66,7 +66,7 @@ struct ContentView: View {
                         SignAll(RootPath)
                     }
                 } label: {
-                    Text("Sign All 2.3.1")
+                    Text("Sign All 2.3.2")
                 }
                 Button {
                     InjectAll(RootPath)
@@ -112,16 +112,21 @@ struct ContentView: View {
             spawnRoot("\(RootPath)/usr/bin/fastPathSign", ["\(RootPath)/\(File)"])
             SignedFiles = SignedFiles + 1
         }
+        print(SignFiles)
     }
 }
 
 func ShouldSignFile(_ Path: String) -> Bool {
-    print(Path)
     return IsFile(Path) && !IsSymbolicLink(Path) && IsBinary(Path)
 }
 
 func IsBinary(_ Path: String) -> Bool {
-    let FileExtension = URL(fileURLWithPath: Path).pathExtension.lowercased()
+    let FileURL = URL(fileURLWithPath: Path)
+    if FileURL.lastPathComponent == "CodeResources" {
+        print(Path)
+        return false
+    }
+    let FileExtension = FileURL.pathExtension.lowercased()
     return FileExtension.isEmpty || FileExtension == "dylib" || FileExtension == "so"
 }
 
