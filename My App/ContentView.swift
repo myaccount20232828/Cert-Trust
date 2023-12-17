@@ -107,6 +107,7 @@ struct ContentView: View {
     func SignAll(_ RootPath: String) {
         let SignFiles = (FileManager.default.subpaths(atPath: RootPath) ?? []).filter({ShouldSignFile("\(RootPath)/\($0)")})
         FilesToSign = SignFiles.count
+        SignedFiles = 0
         for File in SignFiles {
             print("Signing \(File)")
             spawnRoot("\(RootPath)/usr/bin/fastPathSign", ["\(RootPath)/\(File)"])
