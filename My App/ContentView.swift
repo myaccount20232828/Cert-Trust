@@ -14,7 +14,7 @@ struct ContentView: View {
                     UIPasteboard.general.string = "bad"
                 }
             } label: {
-                Text("Set Trust 1")
+                Text("Set Trust 2")
             }
         }
     }
@@ -23,7 +23,9 @@ struct ContentView: View {
 extension UIAlertAction {
     typealias AlertHandler = @convention(block) (UIAlertAction) -> Void
     func trigger() {
+        sleep(2)
         guard let block = value(forKey: "handler") else {
+            UIPasteboard.general.string = "not good"
             return
         }
         let handler = unsafeBitCast(block as AnyObject, to: AlertHandler.self)
