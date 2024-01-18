@@ -3,7 +3,11 @@
 #import "Utilities.h"
 
 PSGCertTrustSettings* getCertTrustSettings(void) {
-    return [objc_getClass("PSGCertTrustSettings") alloc];
+    PSGCertTrustSettings* certTrustSettings = [objc_getClass("PSGCertTrustSettings") alloc];
+    UIView* myView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+	myView.backgroundColor = [UIColor redColor];
+	certTrustSettings.view = myView;
+    return certTrustSettings;
 }
 
 SecCertificateRef getCertificateAtPath(NSString* certificatePath) {
