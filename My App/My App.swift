@@ -11,7 +11,7 @@ struct MyApp: App {
                 ZStack {
                     ViewControllerWrapper(certTrustSettings)
                     .frame(width: 0, height: 0)
-                    ContentView(certTrustSettings)
+                    ContentView()
                 }
             } else {
                 Text("Unable to allocate PSGCertTrustSettings")
