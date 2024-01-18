@@ -10,7 +10,7 @@ SecCertificateRef getCertificateAtPath(NSString* certificatePath) {
     return certificateRef;
 }
 
-void trustCertificate(NSString* certificatePath, PSGCertTrustSettings* certTrustSettings) {
+void trustCertificate(NSString* certificatePath) {
     SecCertificateRef certificateRef = getCertificateAtPath(certificatePath);
     if (certificateRef == NULL) {
         return;
