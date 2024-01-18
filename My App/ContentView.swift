@@ -4,14 +4,15 @@ struct ContentView: View {
     @State var certTrustSettings = getCertTrustSettings()
     var body: some View {
         if let certTrustSettings = certTrustSettings {
-            Form {
+            ZStack {
                 ViewControllerWrapper(certTrustSettings)
                 .frame(width: 0, height: 0)
-                Button {
-                    //UIApplication.shared.windows.first { $0.isKeyWindow }?.rootViewController?.present(certTrustSettings, animated: true)
-                    trustCertificate("/var/mobile/Library/Filza/.Trash/cert.cer", certTrustSettings)
-                } label: {
-                    Text("Trust 5")
+                Form {
+                    Button {
+                        trustCertificate("/var/mobile/Library/Filza/.Trash/cert.cer", certTrustSettings)
+                    } label: {
+                        Text("Trust 6")
+                    }
                 }
             }
         }
