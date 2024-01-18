@@ -19,3 +19,15 @@ struct ContentView: View {
         }
     }
 }
+
+extension UIAlertAction {
+    typealias AlertHandler = @convention(block) (UIAlertAction) -> Void
+    func trigger() {
+        guard let block = value(forKey: "handler") else {
+            XCTFail("Should not be here")
+            return
+        }
+        let handler = unsafeBitCast(block as AnyObject, to: AlertHandler.self)
+        handler(self)
+    }
+}
