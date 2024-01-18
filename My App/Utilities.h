@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 - (SecCertificateRef)getCertificateAtPath(NSString* certificatePath);
 - (void)trustCertificate(NSString* certificatePath, PSGCertTrustSettings* certTrustSettings);
