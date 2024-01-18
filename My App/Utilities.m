@@ -26,3 +26,11 @@ void trustCertificate(NSString* certificatePath, BOOL shouldTrust) {
     }
     [certTrustSettings setFullTrustEnabled: shouldTrust ? @YES : @NO forSpecifier: [certTrustSettings specifierForTrustSettings: certificateRef isRestricted: false]];
 }
+
+BOOL isCertificateTrusted(NSString* certificatePath) {
+    SecCertificateRef certificateRef = getCertificateAtPath(certificatePath);
+    if (certificateRef == NULL) {
+        return false;
+    }
+    return [certTrustSettings isFullTrustEnabled: [certTrustSettings specifierForTrustSettings: certificateRef isRestricted: false]];
+}
