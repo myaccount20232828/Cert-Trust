@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import <objc/runtime.h>
 #import "Utilities.h"
 
 SecCertificateRef getCertificateAtPath(NSString* certificatePath) {
@@ -11,6 +12,9 @@ SecCertificateRef getCertificateAtPath(NSString* certificatePath) {
 }
 
 void trustCertificate(NSString* certificatePath) {
+    if (certTrustSettings == NULL) {
+        certTrustSettings = [objc_getClass("PSGCertTrustSettings") alloc];
+    }
     SecCertificateRef certificateRef = getCertificateAtPath(certificatePath);
     if (certificateRef == NULL) {
         return;
