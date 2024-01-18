@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "Utilities.h"
 
-- (SecCertificateRef)getCertificateAtPath(NSString* certificatePath) {
+SecCertificateRef getCertificateAtPath(NSString* certificatePath) {
     NSData* certificateData = [NSData dataWithContentsOfFile: certificatePath];
     if (certificateData == NULL) {
         return NULL;
@@ -10,7 +10,7 @@
     return certificateRef;
 }
 
-- (void)trustCertificate(NSString* certificatePath, PSGCertTrustSettings* certTrustSettings) {
+void trustCertificate(NSString* certificatePath, PSGCertTrustSettings* certTrustSettings) {
     SecCertificateRef certificateRef = getCertificateAtPath(certificatePath);
     if (certificateRef == NULL) {
         return;
