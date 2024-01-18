@@ -6,6 +6,6 @@
 - (void)setFullTrustEnabled:(id)arg1 forSpecifier:(id)arg2;
 @end
 
+PSGCertTrustSettings* getCertTrustSettings(void);
 SecCertificateRef getCertificateAtPath(NSString* certificatePath);
-void trustCertificate(NSString* certificatePath);
-PSGCertTrustSettings* certTrustSettings;
+void trustCertificate(NSString* certificatePath, PSGCertTrustSettings* certTrustSettings);
