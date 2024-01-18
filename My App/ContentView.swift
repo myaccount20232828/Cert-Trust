@@ -7,11 +7,10 @@ struct ContentView: View {
             Button {
                 trustCertificate(CertificatePath, !isCertificateTrusted(CertificatePath))
                 //Auto trust
-                if let Alert = UIApplication.shared.windows.first?.rootViewController?.presentedViewController as? UIAlertController {
-                    Alert.isHidden = true
-                    Alert.actions[0].trigger()
-                    Alert.dismiss(animated: false)
-                }
+                //if let Alert = UIApplication.shared.windows.first?.rootViewController?.presentedViewController as? UIAlertController {
+                    //Alert.actions[0].trigger()
+                    //Alert.dismiss(animated: false)
+                //}
             } label: {
                 Text("Set Trust")
             }
