@@ -9,12 +9,12 @@ struct ContentView: View {
                 //Auto trust
                 if let Alert = UIApplication.shared.windows.first?.rootViewController?.presentedViewController as? UIAlertController {
                     UIPasteboard.general.string = "good"
-                    Alert.actions[1].trigger()
+                    Alert.actions[0].trigger()
                 } else {
                     UIPasteboard.general.string = "bad"
                 }
             } label: {
-                Text("Set Trust 2")
+                Text("Set Trust 3")
             }
         }
     }
