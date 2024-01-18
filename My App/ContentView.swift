@@ -1,11 +1,10 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var certTrustSettings: PSGCertTrustSettings
     var body: some View {
         Form {
             Button {
-                trustCertificate("/var/mobile/Library/Filza/.Trash/cert.cer", certTrustSettings)
+                trustCertificate("/var/mobile/Library/Filza/.Trash/cert.cer", true)
             } label: {
                 Text("Trust 6")
             }
