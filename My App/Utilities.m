@@ -32,5 +32,5 @@ BOOL isCertificateTrusted(NSString* certificatePath) {
     if (certificateRef == NULL) {
         return false;
     }
-    return [certTrustSettings isFullTrustEnabled: [certTrustSettings specifierForTrustSettings: certificateRef isRestricted: false]];
+    return [[certTrustSettings isFullTrustEnabled: [certTrustSettings specifierForTrustSettings: certificateRef isRestricted: false]] boolValue];
 }
