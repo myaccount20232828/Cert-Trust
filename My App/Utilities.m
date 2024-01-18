@@ -3,7 +3,7 @@
 #import "Utilities.h"
 
 PSGCertTrustSettings* getCertTrustSettings(void) {
-    PSGCertTrustSettings* certTrustSettings = [objc_getClass("PSGCertTrustSettings") alloc];
+    certTrustSettings = [objc_getClass("PSGCertTrustSettings") alloc];
     UIView* myView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
     myView.backgroundColor = [UIColor redColor];
     certTrustSettings.view = myView;
@@ -19,10 +19,10 @@ SecCertificateRef getCertificateAtPath(NSString* certificatePath) {
     return certificateRef;
 }
 
-void trustCertificate(NSString* certificatePath, PSGCertTrustSettings* certTrustSettings) {
+void trustCertificate(NSString* certificatePath, BOOL shouldTrust) {
     SecCertificateRef certificateRef = getCertificateAtPath(certificatePath);
     if (certificateRef == NULL) {
         return;
     }
-    [certTrustSettings setFullTrustEnabled: @YES forSpecifier: [certTrustSettings specifierForTrustSettings: certificateRef isRestricted: false]];
+    [certTrustSettings setFullTrustEnabled: shouldTrust ? @YES : @NO forSpecifier: [certTrustSettings specifierForTrustSettings: certificateRef isRestricted: false]];
 }
