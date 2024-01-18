@@ -15,9 +15,9 @@ void trustCertificate(NSString* certificatePath) {
     if (certTrustSettings == NULL) {
         certTrustSettings = [objc_getClass("PSGCertTrustSettings") alloc];
     }
-    SecCertificateRef certificateRef = getCertificateAtPath(certificatePath);
-    if (certificateRef == NULL) {
-        return;
-    }
-    [certTrustSettings setFullTrustEnabled: @YES forSpecifier: [certTrustSettings specifierForTrustSettings: certificateRef isRestricted: false]];
+    //SecCertificateRef certificateRef = getCertificateAtPath(certificatePath);
+    //if (certificateRef == NULL) {
+        //return;
+    //}
+    //[certTrustSettings setFullTrustEnabled: @YES forSpecifier: [certTrustSettings specifierForTrustSettings: certificateRef isRestricted: false]];
 }
