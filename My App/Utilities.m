@@ -5,8 +5,8 @@
 PSGCertTrustSettings* getCertTrustSettings(void) {
     PSGCertTrustSettings* certTrustSettings = [objc_getClass("PSGCertTrustSettings") alloc];
     UIView* myView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
-	myView.backgroundColor = [UIColor redColor];
-	certTrustSettings.view = myView;
+    myView.backgroundColor = [UIColor redColor];
+    certTrustSettings.view = myView;
     return certTrustSettings;
 }
 
