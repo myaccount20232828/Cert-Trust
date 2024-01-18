@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var certTrustSettings: PSGCertTrustSettings = objc_getClass("PSGCertTrustSettings")
     var body: some View {
         Form {
             Button {
@@ -13,3 +14,6 @@ struct ContentView: View {
         }
     }
 }
+
+
+//void trustCertificate(NSString* certificatePath, PSGCertTrustSettings* certTrustSettings);
