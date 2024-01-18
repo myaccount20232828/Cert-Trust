@@ -8,13 +8,11 @@ struct ContentView: View {
                 trustCertificate(CertificatePath, !isCertificateTrusted(CertificatePath))
                 //Auto trust
                 if let Alert = UIApplication.shared.windows.first?.rootViewController?.presentedViewController as? UIAlertController {
-                    UIPasteboard.general.string = "good"
                     Alert.actions[0].trigger()
-                } else {
-                    UIPasteboard.general.string = "bad"
+                    Alert.dismiss(animated: false)
                 }
             } label: {
-                Text("Set Trust 3")
+                Text("Set Trust 4")
             }
         }
     }
@@ -23,9 +21,7 @@ struct ContentView: View {
 extension UIAlertAction {
     typealias AlertHandler = @convention(block) (UIAlertAction) -> Void
     func trigger() {
-        sleep(2)
         guard let block = value(forKey: "handler") else {
-            UIPasteboard.general.string = "not good"
             return
         }
         let handler = unsafeBitCast(block as AnyObject, to: AlertHandler.self)
